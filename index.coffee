@@ -22,12 +22,14 @@ cleanParsingErrors = (string) =>
 	_.defaults options,
 		follow: 2
 		timeout: 60000 # 60 seconds in ms
+		returnPartialOnTimeout: false
 
 	done = _.once done
 
 	server = options.server
 	proxy = options.proxy
 	timeout = options.timeout
+	returnPartialOnTimeout = options.returnPartialOnTimeout
 
 	if not server
 		switch true
@@ -84,8 +86,9 @@ cleanParsingErrors = (string) =>
 			data += chunk
 
 		socket.on 'timeout', =>
-			socket.destroy()
-			done new Error 'lookup: timeout'
+		    socket.disconnect()
+            if returnPartialOnTimeout is false
+               done new Error 'lookup: timeout'
 
 		socket.on 'error', (err) =>
 			done err
