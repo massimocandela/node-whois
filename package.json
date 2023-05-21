@@ -7,9 +7,6 @@
     "whois": "bin.js"
   },
   "scripts": {
-    "rebuild": "rm -f ./package-lock.json ; rm -rf ./node_modules ; npm i",
-    "prepare": "make",
-    "test": "make test"
   },
   "repository": {
     "type": "git",
