@@ -1,7 +1,7 @@
 _ = require 'underscore'
 net = require 'net'
 SocksClient = require('socks').SocksClient
-punycode = require 'punycode'
+url = require 'url'
 util = require 'util'
 
 
@@ -41,7 +41,7 @@ cleanParsingErrors = (string) =>
 				server = @SERVERS['_']['ip']
 
 			else
-				tld = punycode.toASCII addr
+				tld = url.domainToASCII(addr)
 				while true
 					server = @SERVERS[tld]
 					if not tld or server
@@ -76,7 +76,7 @@ cleanParsingErrors = (string) =>
 	_lookup = (socket, done) =>
 		idn = addr
 		if server.punycode isnt false and options.punycode isnt false
-			idn = punycode.toASCII addr
+			idn = url.domainToASCII(addr)
 		if options.encoding
 			socket.setEncoding options.encoding
 		socket.write server.query.replace '$addr', idn
